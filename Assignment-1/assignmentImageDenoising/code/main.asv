@@ -1,0 +1,25 @@
+% clf;
+clear;
+images = load("../data/assignmentImageDenoisingPhantom.mat");
+noisy_im = images.imageNoisy;
+clear_im = images.imageNoiseless;
+% figure;
+% imshow(noisy_im);
+% figure;
+% imshow(clear_im);
+
+present = noisy_im;
+shape = size(noisy_im);
+h = shape(1);
+w = shape(2);
+alpha = 0.5;
+for k=1:1
+    der_noise = zeros(size(present));
+    for i=1:h
+        for j=1:w
+            der_noise(i,j) = (1-alpha)*2*(present(i,j) - noisy_im(i,j));
+        end
+    end
+    der_noise = der_noise + oper
+end 
+imshow(der_noise);
