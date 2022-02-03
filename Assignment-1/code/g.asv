@@ -26,11 +26,6 @@ function [f,der] = g(im, gamma, prior_ind)
         der(ind_lin_neg) = -gamma;
     end
     
-    % This is discontinuity adaptive function
-    if prior_ind == 2
-        f = gamma*abs(im)-gamma^2*log(1+abs(im)/gamma);
-        f = sum(f, 'all');
-        der = gamma*sign(im) - gamma*(1./(1+abs(im)/gamma)).*sign(im);
-    end
+    % 
 
 end

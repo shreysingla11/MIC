@@ -1,17 +1,17 @@
-function [denoised_image, rmse] = denoise(noisy_im,clear_im,alpha,eta,gamma, plot_im)
+function [denoised_image, rmse] = denoise(noisy_im,clear_im,alpha,eta,gamma, plot_im, prior_ind)
     
     present = noisy_im;
     min_iters = 100;
     br = 0.001;
 
-    losses = [loss(noisy_im, present,alpha,gamma)];
+    losses = [loss(noisy_im, present,alpha,gamma, prior_ind)];
     %rmses = [];
     %etas = [];
-    for k = 1:10000
-        [curr_loss, curr_loss_dash] = loss(noisy_im, present,alpha,gamma);
+    for k = 1:1000
+        [curr_loss, curr_loss_dash] = loss(noisy_im, present,alpha,gamma, prior_ind);
 
         %rmses = [rmses, RRMSE(clear_im, present)];
-        next_loss = loss(noisy_im,present-eta*curr_loss_dash,alpha,gamma);
+        next_loss = loss(noisy_im,present-eta*curr_loss_dash,alpha,gamma, prior_ind);
         
         if (curr_loss < next_loss)
             eta = eta/2;

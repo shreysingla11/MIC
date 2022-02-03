@@ -1,4 +1,4 @@
-function [f,der] = prior(x, weight, gamma)
+function [f,der] = prior(x, weight, gamma, prior_ind)
     shape = size(x);
     h = shape(1);
     w = shape(2);
@@ -12,8 +12,8 @@ function [f,der] = prior(x, weight, gamma)
     f = 0;
     der = zeros(size(x));
     for offset=[-1,1]
-        [gx,gx_der] = g(x-temp(2+offset:end-1+offset,2:end-1), gamma);
-        [gy,gy_der] = g(x-temp(2:end-1,2+offset:end-1+offset), gamma);
+        [gx,gx_der] = g(x-temp(2+offset:end-1+offset,2:end-1), gamma, prior_ind);
+        [gy,gy_der] = g(x-temp(2:end-1,2+offset:end-1+offset), gamma, prior_ind);
         f = f + weight*(gx+gy);
         der = der + weight*(gx_der + gy_der);
     end
