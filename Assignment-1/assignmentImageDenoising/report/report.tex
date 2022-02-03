@@ -1,0 +1,73 @@
+\title{CS736: Homework 1}
+\author{ Danish Anugral \\190050053 Jayesh Singla\\ 190050114 Shrey Singla}
+\date{April 2021}
+
+\documentclass[11pt]{article}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{hyperref}
+\usepackage{ulem}
+\usepackage{parskip}
+\usepackage[margin=0.5in]{geometry}
+\usepackage{graphicx}
+\usepackage{float}
+
+\setlength{\parskip}{1em}
+\begin{document}
+\maketitle
+
+\begin{enumerate}
+    \item 
+    Lab implementation - 
+    \begin{enumerate}
+        \item We have implemented the independent and identically distributed Gaussian distribution as the noise model. ie $P(y_i | x_i) \sim \mathcal{G}(0, \sigma^2)$ where $\sigma=1$
+    \end{enumerate}
+    \item 
+    \item \begin{enumerate}
+        \item We first observe that the major difference between an RGB image and a grayscale image is that there are three values at each pixel and thus we need to capture correlation across channels as well. Another thing to note is that it is difficult to directly model the dependency of pixel values across channels, thus we would be model each 3-valued pixel vector as a 3-dimensional random variable with 4 neighbours as the pixel vectors at adjacent positions. 
+        
+        Thus, a clique contains 6 elements, with 3 elements each from adjacent pixel vectors. We want to model the vector such that the change in any dimension across neighbours is small except at discontinuity/outliers.
+        
+        Also, we observe that a better way to characterize smoothness in images would be to consider the HSV representation of a pixel instead of the RGB one as a large change in RGB norm may not always correspond to a discontinuity/outlier. The semantic independence between the 3 values in HSV better ensures that a a large change corresponds to a more prominent discontinuity/outlier.
+        
+        Thus, the potential function for a clique c (2 adjacent pixels) can be modeled as - 
+        
+        $$
+        V_c(\boldsymbol{x_{ij}},\boldsymbol{x_{i'j'}}) = g(||h(\boldsymbol{x_{ij}}) - h(\boldsymbol{x_{i'j'}})||_2)
+        $$
+        
+        where g is the Huber function and h is the HSV tranform
+        
+        Thus, the prior model for the image is 
+        
+        $$
+        P(X) = \frac{1}{Z}e^{-\frac{1}{T}\sum_{c \in C} V_c(\{\boldsymbol{x}_c\})}
+        $$
+        
+        \item A suitable noise model for microscopy RGB images would be channel-independent Gaussian noise.
+        
+        Let $x_{ij}^k,y_{ij}^k$ be the pixel values at position (i,j) and channel k.
+        
+        The noise model is as follows - 
+        
+        $$
+        y_{ij}^k = x_{ij}^k + N(0,\sigma^2)
+        $$
+        $$
+        P(y_{ij}^k | x_{ij}^k) = \frac{1}{\sqrt{2\pi\sigma^2}}e^{-\frac{(y_{ij}^k - x_{ij}^k)^2}{2\sigma^2}}
+        $$
+        
+        $$
+        P(Y|X) = \prod_{i,j,k} P(y_{ij}^k | x_{ij}^k)
+        $$
+        
+        Another possible solution to formulating the noise model would be to model the noise in the pixel vector as a zero multi-variate Gaussian where the noise in individual channels is not necessarily independent. 
+        The covariance matrix would have to be inferred using a data-driven approach.
+        
+        \item The Bayesian denoising formulation would be maximising 
+    \end{enumerate}
+\end{enumerate}
+
+
+\end{document}
