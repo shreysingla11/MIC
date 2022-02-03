@@ -1,12 +1,29 @@
 clf;
 clear;
 close all;
-images = load("../data/assignmentImageDenoisingPhantom.mat");
-noisy_im = images.imageNoisy;
-clear_im = images.imageNoiseless;
+
+image = 'phantom';
+global likelihood_type;
+global prior_type;
+prior_type = 'huber';
+likelihood_type = 'gaussian';
+
+if strcmp(image,'phantom') 
+    images = load("../data/assignmentImageDenoisingPhantom.mat");
+    noisy_im = images.imageNoisy;
+    clear_im = images.imageNoiseless;
+else
+    images = load("../data/brainMRIslice.mat");
+    noisy_im = images.brainMRIsliceNoisy;
+    clear_im = images.brainMRIsliceOrig;
+end
+
+fprintf('Initial RRMSE = %f\n',RRMSE(clear_im,noisy_im));
+
 eta = 0.01;
 alphas = linspace(0.993333,1,5);
 gammas = linspace(0.00001,0.001120,5);
+
 rmses = zeros(length(alphas),length(gammas));
 
 for i = 1:length(alphas)

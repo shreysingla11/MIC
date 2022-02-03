@@ -7,7 +7,7 @@ function [denoised_image, rmse] = denoise(noisy_im,clear_im,alpha,eta,gamma, plo
     losses = [loss(noisy_im, present,alpha,gamma)];
     %rmses = [];
     %etas = [];
-    for k = 1:10000
+    for k = 1:1000
         [curr_loss, curr_loss_dash] = loss(noisy_im, present,alpha,gamma);
 
         %rmses = [rmses, RRMSE(clear_im, present)];
