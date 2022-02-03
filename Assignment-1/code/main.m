@@ -6,7 +6,7 @@ image = 'phantom'; % Image to perform denoising on
 global likelihood_type; % Variable to store type of noise model to use 
 global prior_type; % Variable to store type of prior to use 
 
-prior_type = 'huber';
+prior_type = 'discontinuity_adaptive';
 likelihood_type = 'gaussian';
 
 if strcmp(image,'phantom') 
@@ -23,8 +23,8 @@ fprintf('Initial RRMSE = %f\n',RRMSE(clear_im,noisy_im));
 
 % Set hyperparameters
 eta = 0.01; % Inital value for learning rate in gradient descent
-alphas = linspace(0.993333,1,5); % Array of alpha values to search over
-gammas = linspace(0.00001,0.001120,5);  % Array of gamma values to search over
+alphas = linspace(0.985,0.995,3); % Array of alpha values to search over
+gammas = linspace(0.0009,0.0011,3);  % Array of gamma values to search over
 
 rmses = zeros(length(alphas),length(gammas));
 

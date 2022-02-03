@@ -36,6 +36,7 @@ function [denoised_image, rmse] = denoise(noisy_im,clear_im,alpha,eta,gamma, plo
     % Code to plot the loss values at each iteration if plot_im flag is set
     if plot_im == 1 
         figure;
+        pause(1);
         plot(losses(1:k+1));
         title(sprintf('Loss - Gamma %f - Alpha %f',gamma, alpha));
     end
