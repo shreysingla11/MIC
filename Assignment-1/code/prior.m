@@ -1,8 +1,13 @@
-function [f,der] = prior(x, weight, gamma, prior_ind)
+function [f,der] = prior(x, weight, gamma)
+    % Function to compute the value f and derivative der of the prior 
+    % at a point
+
     shape = size(x);
     h = shape(1);
     w = shape(2);
     temp = zeros([h+2, w+2]);
+
+    % Use 'same' type padding to x to ease neighbour computation
     temp(2:end-1,2:end-1) = x;
     temp(1,2:end-1) = x(1,:);
     temp(end,2:end-1) = x(end,:);
@@ -11,9 +16,11 @@ function [f,der] = prior(x, weight, gamma, prior_ind)
     
     f = 0;
     der = zeros(size(x));
+
     for offset=[-1,1]
-        [gx,gx_der] = g(x-temp(2+offset:end-1+offset,2:end-1), gamma, prior_ind);
-        [gy,gy_der] = g(x-temp(2:end-1,2+offset:end-1+offset), gamma, prior_ind);
+        % Sum of the values for g
+        [gx,gx_der] = g(x-temp(2+offset:end-1+offset,2:end-1), gamma);
+        [gy,gy_der] = g(x-temp(2:end-1,2+offset:end-1+offset), gamma);
         f = f + weight*(gx+gy);
         der = der + weight*(gx_der + gy_der);
     end
